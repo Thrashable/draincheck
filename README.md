@@ -1,113 +1,104 @@
 # Draincheck
 
-**See what's draining your wallet.** Draincheck connects to your Gmail, scans for subscription receipts and billing emails, and shows you exactly where your money is going each month.
+Draincheck is a privacy-focused subscription scanner that uses read-only Gmail access to find recurring charges and summarize where money is going each month.
 
-Live at: [draincheck.netlify.app](https://draincheck.netlify.app)
+## Live Demo
 
-## What It Does
+[draincheck.netlify.app](https://draincheck.netlify.app)
 
-- Signs you in with Google OAuth (read-only Gmail access)
-- Searches your inbox for receipts, renewal notices, welcome emails, and billing notifications from the last 12 months
-- Separates **recurring subscriptions** from **one-time purchases** automatically
-- Shows your total monthly subscription cost, charge history, and payment methods
-- Links each charge back to the original email in Gmail
-- Sorts by cost, date, total spent, or name
+## Features
+
+- Google OAuth sign-in with read-only Gmail permissions
+- Gmail search across receipts, renewals, signup notices, and billing emails
+- Automatic separation of recurring subscriptions and one-time purchases
+- Monthly spend summary, charge history, categories, and payment method hints
+- Links back to original Gmail messages for verification
+- Sorting and filtering by cost, date, total spend, category, and merchant
 
 ## Privacy & Security
 
-- **No passwords collected.** Authentication is handled entirely through Google's OAuth 2.0 flow.
-- **No email data stored.** Draincheck reads your email metadata in real-time during a scan and never saves it to any database or server.
-- **No third-party AI APIs.** All subscription detection is done locally using pattern matching — your email content is never sent to any external AI service.
-- **Read-only access.** The app only requests `gmail.readonly` permission. It cannot send, delete, or modify any of your emails.
-- **Encrypted sessions.** Auth tokens are stored in encrypted HTTP-only cookies that expire in 24 hours.
-
-## How It Works
-
-1. You sign in with Google
-2. The app runs 4 targeted Gmail searches for subscription-related emails (receipts, renewals, signups, billing)
-3. Each email is classified: subscription receipt, one-time purchase, welcome email, renewal notice, failed payment, or cancellation
-4. Emails from the same business are grouped together to build a complete picture — charge count, total spent, payment method, date range
-5. Results are split into two sections: recurring subscriptions on top, one-time payments below
+- Authentication is handled through Google OAuth 2.0.
+- Draincheck requests only the `gmail.readonly` scope.
+- Subscription detection runs in app code with pattern matching, not third-party AI APIs.
+- Email data is scanned during the session and is not stored in a database.
+- Auth tokens are stored in encrypted HTTP-only cookies that expire after 24 hours.
 
 ## Tech Stack
 
-- **Frontend:** React 18 + Vite + Tailwind CSS + Framer Motion
-- **Backend:** Netlify Functions (serverless)
-- **Auth:** Google OAuth 2.0 with encrypted cookie sessions
-- **Email:** Gmail API (read-only)
+- **Frontend:** React 18, Vite, Tailwind CSS, Framer Motion
+- **Backend:** Netlify Functions
+- **Auth:** Google OAuth 2.0
+- **Email:** Gmail API
 - **Hosting:** Netlify
 
-## Local Development
+## Screenshots
+
+Screenshots are not committed yet. Recommended additions:
+
+- Login screen
+- Subscription dashboard
+- Category or monthly spend breakdown
+
+## Local Setup
 
 ### Prerequisites
 
 - Node.js 18+
-- A Google Cloud Console project with the Gmail API enabled
+- Netlify CLI
+- Google Cloud project with the Gmail API enabled
 
 ### Setup
 
-1. **Clone the repo**
+1. Clone the repo:
+
    ```bash
-   git clone https://github.com/YOUR_USERNAME/draincheck.git
+   git clone https://github.com/Thrashable/draincheck.git
    cd draincheck
    ```
 
-2. **Set up Google OAuth credentials**
-   - Go to [Google Cloud Console](https://console.cloud.google.com/)
-   - Create a new project
-   - Enable the **Gmail API**
-   - Go to **APIs & Services > Credentials**
-   - Create an **OAuth 2.0 Client ID** (Web application)
-   - Add `http://localhost:8888/auth/google/callback` as an authorized redirect URI
-   - Add `http://localhost:8888` as an authorized JavaScript origin
-   - Copy your Client ID and Client Secret
+2. Create Google OAuth credentials:
 
-3. **Configure environment**
+   - Enable the Gmail API in Google Cloud Console.
+   - Create an OAuth 2.0 Client ID for a web application.
+   - Add `http://localhost:8888/auth/google/callback` as an authorized redirect URI.
+   - Add `http://localhost:8888` as an authorized JavaScript origin.
+
+3. Configure environment variables:
+
    ```bash
-   cp server/.env.example server/.env
+   cp .env.example .env
    ```
-   Fill in your `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and set a random `SESSION_SECRET`.
 
-4. **Install dependencies**
+   Fill in `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and `SESSION_SECRET`.
+
+4. Install dependencies:
+
    ```bash
    npm install
    cd client && npm install && cd ..
    ```
 
-5. **Run with Netlify Dev** (recommended — runs functions + frontend together)
+5. Run the app with Netlify Dev:
+
    ```bash
    npx netlify-cli dev
    ```
-   Open `http://localhost:8888`
 
-### Project Structure
+   Open `http://localhost:8888`.
 
-```
+## Project Structure
+
+```text
 draincheck/
-  client/                    # React frontend (Vite + Tailwind)
-    src/
-      components/            # Dashboard, cards, stats, filters
-      utils/                 # Formatters, category colors
-  netlify/
-    functions/               # Serverless API endpoints
-      auth-google.mjs        # OAuth redirect
-      auth-callback.mjs      # OAuth callback + cookie
-      auth-me.mjs            # Check auth status
-      auth-logout.mjs        # Clear session
-      scan.mjs               # Gmail scan + extraction
-      subscriptions.mjs      # Return cached results
-    shared/                  # Shared backend logic
-      gmail.mjs              # Gmail API search
-      extract.mjs            # Subscription extraction engine
-      crypto.mjs             # Cookie encryption
-  netlify.toml               # Netlify config + redirects
+  client/             React frontend
+  netlify/functions/  Serverless API endpoints
+  netlify/shared/     Gmail, extraction, and cookie helpers
+  netlify.toml        Netlify build and redirect config
 ```
 
-## About This Project
+## Project Status
 
-This is v1, built by a non-technical person learning [Claude Code](https://claude.ai/claude-code). The entire app — backend, frontend, deployment, Google OAuth setup, and all the iterative improvements — was built through conversation with Claude. No prior web development experience required.
-
-If you're learning to build with AI tools, this project is proof that you can ship real, functional web apps without writing code yourself.
+Portfolio-ready v1. The app is deployed on Netlify and demonstrates a practical AI-assisted workflow: OAuth setup, serverless functions, Gmail API integration, privacy-first data handling, and a clean React dashboard. Future improvements could include screenshot assets, richer category analytics, and clearer onboarding for Google OAuth verification.
 
 ## License
 
