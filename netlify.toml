@@ -1,0 +1,47 @@
+[build]
+  command = "cd client && npm install && npm run build"
+  publish = "client/dist"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+  included_files = ["netlify/shared/**"]
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[redirects]]
+  from = "/auth/google"
+  to = "/.netlify/functions/auth-google"
+  status = 200
+
+[[redirects]]
+  from = "/auth/google/callback"
+  to = "/.netlify/functions/auth-callback"
+  status = 200
+
+[[redirects]]
+  from = "/auth/me"
+  to = "/.netlify/functions/auth-me"
+  status = 200
+
+[[redirects]]
+  from = "/auth/logout"
+  to = "/.netlify/functions/auth-logout"
+  status = 200
+
+[[redirects]]
+  from = "/api/scan"
+  to = "/.netlify/functions/scan"
+  status = 200
+
+[[redirects]]
+  from = "/api/subscriptions"
+  to = "/.netlify/functions/subscriptions"
+  status = 200
+
+# SPA fallback — must be last
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
