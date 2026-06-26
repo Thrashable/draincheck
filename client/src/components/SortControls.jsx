@@ -21,7 +21,7 @@ export default function SortDropdown({ options, sortKey, onSort }) {
     <select
       value={sortKey}
       onChange={(e) => onSort(e.target.value)}
-      className="bg-surface-raised border border-surface-border rounded-lg px-3 py-1.5 text-sm font-body text-text-secondary focus:outline-none focus:border-accent-coral/50 cursor-pointer appearance-none"
+      className="max-w-full min-w-0 bg-surface-raised border border-surface-border rounded-lg px-3 py-1.5 text-sm font-body text-text-secondary focus:outline-none focus:border-accent-coral/50 cursor-pointer appearance-none"
       style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M3 5l3 3 3-3'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center', paddingRight: '30px' }}
     >
       {options.map((opt) => (
